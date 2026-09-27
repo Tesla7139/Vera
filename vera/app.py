@@ -43,7 +43,8 @@ async def _json(request: Request) -> dict | None:
 
 # ------------------------------------------------------------------ health / metadata
 
-@app.get("/v1/healthz")
+# HEAD too: uptime pingers (UptimeRobot) and Render's port probe use HEAD requests.
+@app.api_route("/v1/healthz", methods=["GET", "HEAD"])
 async def healthz():
     return {"status": "ok", "uptime_seconds": int(time.time() - START), "contexts_loaded": store.counts()}
 
@@ -323,6 +324,6 @@ async def teardown():
     return {"ok": True, "wiped_at": _now_iso()}
 
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 async def root():
     return {"service": "vera-challenge-bot", "endpoints": ["/v1/healthz", "/v1/metadata", "/v1/context", "/v1/tick", "/v1/reply"]}

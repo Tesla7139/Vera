@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: vera-bot
+    runtime: docker
+    plan: free          # sleeps after ~15 min idle: keep it awake with an external pinger on /v1/healthz
+    region: singapore   # closest Render region to India
+    healthCheckPath: /v1/healthz
+    envVars:
+      # Azure / Microsoft Foundry deployment - values are entered in the Render dashboard, never committed
+      - key: AZURE_ENDPOINT
+        sync: false
+      - key: AZURE_API_KEY
+        sync: false
+      - key: VERA_MODEL
+        value: gpt-6-astra
+      - key: VERA_TEAM_NAME
+        value: Sarthak Gupta
+      - key: VERA_CONTACT_EMAIL
+        sync: false
